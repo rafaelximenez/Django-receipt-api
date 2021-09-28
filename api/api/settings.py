@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rxmz.apps.RxmzConfig',
     # CORS
     'corsheaders',
+    'rxmz',
+    #'rxmz.apps.RxmzConfig',
 ]
 
 MIDDLEWARE = [
@@ -81,6 +82,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
