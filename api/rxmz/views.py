@@ -1,15 +1,16 @@
-from django.shortcuts import render
 
-from django.http.response import JsonResponse
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import JSONParser 
+from django.http.response import JsonResponse
+from django.shortcuts import render
 from rest_framework import status
- 
-from rxmz.models import Recibos
-from rxmz.serializers import RecibosSerializer
-from rest_framework.decorators import api_view
 
+from rxmz.serializers import RecibosSerializer
+from rxmz.models import Recibos
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def index(request):
     recibos = Recibos.objects.all()
         
@@ -17,12 +18,18 @@ def index(request):
     return JsonResponse(recibos_serializer.data, safe=False)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get(request, pk):
-    recibos = Recibos.objects.get(pk=pk)
-    recibos_serializer = RecibosSerializer(recibos) 
+    try:
+        recibos = Recibos.objects.get(pk=pk)
+    except:
+        return JsonResponse({'message': 'Erro ao buscar recibo!'}, status=status.HTTP_400_BAD_REQUEST)
+
+    recibos_serializer = RecibosSerializer(recibos)      
     return JsonResponse(recibos_serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create(request):
     if request.method == 'POST':
         request_body = JSONParser().parse(request)
@@ -34,6 +41,7 @@ def create(request):
     return "Método não suportado", 405
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def change(request, pk):
     if request.method == 'PUT':
         recibo = Recibos.objects.get(pk=pk)
@@ -46,6 +54,7 @@ def change(request, pk):
     return "Método não suportado", 405
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def delete(request, pk):
     if request.method == 'DELETE':
         recibo = Recibos.objects.get(pk=pk)
