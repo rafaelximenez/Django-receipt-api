@@ -13,7 +13,6 @@ from rxmz.models import Recibos
 @permission_classes([IsAuthenticated])
 def index(request):
     recibos = Recibos.objects.all()
-        
     recibos_serializer = RecibosSerializer(recibos, many=True)
     return JsonResponse(recibos_serializer.data, safe=False)
 

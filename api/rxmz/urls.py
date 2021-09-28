@@ -5,7 +5,7 @@ from django.urls import path
 from rxmz import views 
  
 urlpatterns = [ 
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     path('token/', TokenObtainPairView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view()),
     url(r'^recibos$', views.index),
